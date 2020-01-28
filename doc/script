@@ -1,0 +1,46 @@
+# rdesktop 1.8.3
+./bootstrap
+./configure --disable-credssp --disable-smartcard
+make -j4
+
+./rdesktop 10.152.191.100 -u 'H3C\xxxxxx' -p xxxxxxxx -g 1400x700
+./rdesktop 192.168.46.20 -u 'david' -p xxxxxxx -g 1400x700
+
+tiny_impdef.exe wsock32.dll -o .\lib\wsock32.def
+tcc.exe 'src.c' -lwsock32 -o output.exe
+
+route add default gw xx.xx.xx.xx
+
+route add -net x.x.x.x netmask x.x.x.x gw x.x.x.x
+
+# enable forward
+echo 1 > /proc/sys/net/ipv4/ip_forward
+
+# nat
+iptables -t nat -A POSTROUTING -s 172.16.1.0/24 -o eth0 -j SNAT --to 114.114.114.114
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+
+# display nat in iptables
+iptables -t nat -vnL PREROUTING --line-number
+iptables -t nat -vnL OUTPUT --line-number
+
+# dns
+/etc/resolv.conf
+nameserver 8.8.8.8
+
+
+
+./configure
+make clean
+make -j4
+
+
+# adpt param:
+# -rdpt=192.168.2.10:8999
+# -hp=proxy.h3c.com:8080
+# -hpa=xxxxxx:xxxxxxxxx     user:password
+# -serv=176.122.185.139:443
+# -lta=172.16.1.10
+# -rta=172.16.1.11
+
+-rdpt=192.168.2.10:8999 -hp=proxy.h3c.com:8080 -hpa=xxxxx:xxxxxxxxx -serv=176.122.185.139:443 -lta=172.16.1.10 -rta=172.16.1.1

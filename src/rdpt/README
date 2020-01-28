@@ -1,0 +1,17 @@
+C <======> S
+
+client: we use the rdesktop-1.8.3
+just modify some files, list:
+Makefile.in
+rdesktop.c
+rdesktop.h
+rdp.c
+xwin.c
+and add 3 new files:
+rdpt_c.h rdpt_c.c rdpt_prot.h
+
+we make the build script "rdesktop_build.sh"
+tar -xvf the rdesktop-1.8.3, and run the script rdesktop_build.sh, it will modify the source file and build the rdesktop automaticlly.
+
+server: compire with tcc
+rdpt_s.h rdpt_s.c rdpt_prot.h
